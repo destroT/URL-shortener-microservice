@@ -1,13 +1,29 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./stylesheets/style.css" />
+    <title>URL Shortener</title>
+  </head>
+  <body>
+    <div class="container">
+      <section class="header">
+        <h1>URL Shortener Microservice</h1>
+      </section>
 
-<head>
-  <title>Express</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+      <section class="main">
+        <h4>Add a link and get the url shortened.</h4>
+        <div class="form">
+          <form action="/api/shorturl/new" method="post">
+            <label for="url">Url to be shortened.</label>
+            <input type="text" value="" name="url" />
+            <button type="submit">POST</button>
+          </form>
+        </div>
+      </section>
 
-<body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
-</body>
-
+      <section class="footer"></section>
+    </div>
+  </body>
 </html>
