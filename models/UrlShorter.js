@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 const urlSchema = new mongoose.Schema({
-	original_url: {
+	original: {
 		type: String,
-		default: 'point',
 	},
-	short_url: Number,
+	short: Number,
 });
 
 module.exports = mongoose.model('UrlShortener', urlSchema);

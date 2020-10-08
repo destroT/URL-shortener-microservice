@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 
@@ -16,59 +17,83 @@ function is_validURL(str) {
 	return !!pattern.test(str);
 }
 
+function prepareUrl(str) {
+	str = str.trim();
+	return str.replace(/^https:\/\//, '');
+}
+
+function checkUrl(str) {
+	const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+	const regex = new RegExp(expression);
+	if (!str.match(regex)) return false;
+	return true;
+}
+
 // Receive Original URL and return URL shortened
 router.post('/shorturl/new', async (req, res) => {
-	// Check if is valid URL
-
 	let { url } = req.body;
-	//Modify URL
-	url = url.trim();
-	url = url.replace(/^https:\/\//, '');
-	const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-	var regex = new RegExp(expression);
+	//Prepare URL
+	const tempUrl = prepareUrl(url);
 
-	if (!url.match(regex)) {
-		res.json({ error: 'Invalid URL' });
+	// Check if is valid URL
+	if (!checkUrl(tempUrl)) {
+		res.json({ error: 'invalid URL' });
 		return;
 	}
 
 	// Useful vars
-	let responseObject = { original_url: url };
-	let inputShort = 1;
-
-	// Check if the url is alredy be shortened or create one
-	await UrlModel.findOne({})
-		.sort({ short_url: 'desc' })
-		.exec((error, result) => {
-			if (!error && result != undefined) {
-				inputShort = result.short_url + 1;
-			}
-			if (!error) {
-				UrlModel.findOneAndUpdate(
-					{ original_url: url },
-					{ original_url: url, short_url: inputShort },
-					{ upsert: true, useFindAndModify: false },
-					(error, savedUrl) => {
-						if (!error) {
-							responseObject['original_url'] =
-								savedUrl.original_url;
-							responseObject['short_url'] = savedUrl.short_url;
-							console.log(responseObject);
-							res.json(responseObject);
-						}
-					},
-				);
-			}
+	let shortVal = 1;
+	UrlModel.findOne({})
+		.sort({ short: 'desc' })
+		.limit(1)
+		.exec((err, data) => {
+			console.log(data);
+			if (data) shortVal = data.short + 1;
 		});
-	responseObject = {};
+
+	console.log(`Max SHortened ${shortVal}`);
+
+	await UrlModel.findOne({ original: url }, async (err, data) => {
+		if (!err && data != undefined) {
+			console.log('found');
+			console.log(data);
+			return res.json({
+				original_url: data.original,
+				short_url: data.short,
+			});
+		}
+		if (!err) {
+			const newShortened = new UrlModel({
+				original: url,
+				short: shortVal,
+			});
+			try {
+				const savedShortened = await newShortened.save();
+				console.log(savedShortened);
+				return res.json({
+					original_url: savedShortened.original,
+					short_url: savedShortened.short,
+				});
+			} catch (error) {
+				console.log('Internal error');
+				return res.json({
+					error: 'No short URL found for the given input',
+				});
+			}
+		}
+	});
 });
 
 // ShortURL Redirect
-router.get('/shorturl/:id', (req, res) => {
-	const { id } = req.query;
+router.get('/shorturl/:id', async (req, res) => {
+	const { id } = req.params;
 
+	const data = await UrlModel.findOne({ short: id });
+	console.log(data);
+	if (!data) return res.json({ error: 'Invalid URL' });
+
+	res.redirect(data.original);
 	// Find the shortURL
-	res.json({ error: 'No short url' });
 });
 
 module.exports = router;
