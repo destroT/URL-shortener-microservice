@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./stylesheets/style.css" />
-    <title>URL Shortener</title>
-  </head>
-  <body>
-    <div class="container">
-      <section class="header">
-        <h1>URL Shortener Microservice</h1>
-      </section>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./stylesheets/style.css" />
+		<title>URL Shortener</title>
+	</head>
+	<body>
+		<header class="header">
+			<h1 class="title">URL Shortener Microservice</h1>
+			<p class="centered">
+				1. I can POST a URL to [project_url]/api/shorturl/new and I will
+				receive a shortened URL in the JSON response.
+			</p>
+			<p class="centered">
+				2. When I visit the shortened URL, it will redirect me to my
+				original link.
+			</p>
+		</header>
 
-      <section class="main">
-        <h4>Add a link and get the url shortened.</h4>
-        <div class="form">
-          <form action="/api/shorturl/new" method="post">
-            <label for="url">Url to be shortened.</label>
-            <input type="text" value="" name="url" />
-            <button type="submit">POST</button>
-          </form>
-        </div>
-      </section>
+		<section class="main">
+			<h2 class="centered subtitle">
+				Add a link and get the url shortened.
+			</h2>
+			<div class="centered">
+				<form class="form" action="/api/shorturl/new" method="post">
+					<input
+						class="input"
+						type="text"
+						value=""
+						name="url"
+						placeholder="Insert Url"
+					/>
 
-      <section class="footer"></section>
-    </div>
-  </body>
+					<button class="button" type="submit">SUBMIT</button>
+				</form>
+			</div>
+		</section>
+
+		<footer class="footer"></footer>
+	</body>
 </html>
