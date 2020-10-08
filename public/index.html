@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./stylesheets/style.css" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 		<title>URL Shortener</title>
 	</head>
 	<body>
@@ -24,20 +25,41 @@
 				Add a link and get the url shortened.
 			</h2>
 			<div class="centered">
-				<form class="form" action="/api/shorturl/new" method="post">
+				<form
+					id="send-request"
+					class="form"
+					action="/api/shorturl/new"
+					method="post"
+				>
 					<input
+						id="url"
 						class="input"
 						type="text"
 						value=""
 						name="url"
 						placeholder="Insert Url"
+						required
 					/>
-
 					<button class="button" type="submit">SUBMIT</button>
 				</form>
+			</div>
+
+			<div class="result centered">
+				<h2>
+					<a
+						id="shortened"
+						style="display: none"
+						href="http://localhost:8000/"
+						>http://localhost:8000/</a
+					>
+				</h2>
 			</div>
 		</section>
 
 		<footer class="footer"></footer>
+
+		<div class="toast" id="toast">Insert a valid URL</div>
+
+		<script src="./javascripts/async.js"></script>
 	</body>
 </html>

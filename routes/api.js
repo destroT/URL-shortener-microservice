@@ -1,21 +1,7 @@
-const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 
 const UrlModel = require('../models/UrlShorter');
-
-function is_validURL(str) {
-	var pattern = new RegExp(
-		'^(https?:\\/\\/)?' + // protocol
-			'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-			'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-			'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-			'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-			'(\\#[-a-z\\d_]*)?$',
-		'i',
-	); // fragment locator
-	return !!pattern.test(str);
-}
 
 function prepareUrl(str) {
 	str = str.trim();
@@ -29,11 +15,23 @@ function checkUrl(str) {
 	return true;
 }
 
+// Check the URL and add the protocol if needed
+function hasProtocol(str) {
+	try {
+		new URL(str).catch(e => console.log(e));
+		return true;
+	} catch (error) {
+		return false;
+	}
+}
+
 // Receive Original URL and return URL shortened
 router.post('/shorturl/new', async (req, res) => {
 	let { url } = req.body;
+	if (!url) return res.status(400).json({ error: 'No input data' });
 	//Prepare URL
 	const tempUrl = prepareUrl(url);
+	if (!hasProtocol(url)) url = 'http://' + url;
 
 	// Check if is valid URL
 	if (!checkUrl(tempUrl)) {
@@ -88,10 +86,16 @@ router.post('/shorturl/new', async (req, res) => {
 router.get('/shorturl/:id', async (req, res) => {
 	const { id } = req.params;
 
-	const data = await UrlModel.findOne({ short: id });
+	if (!id) return res.status(400).json({ error: 'Invalid data' });
+
+	const data = await UrlModel.findOne({ short: Number(id) });
+
 	console.log(data);
 	if (!data) return res.json({ error: 'Invalid URL' });
 
+	console.log(
+		`Redirecting ${req.connection.remoteAddress} to ${data.original}`,
+	);
 	res.redirect(data.original);
 	// Find the shortURL
 });
