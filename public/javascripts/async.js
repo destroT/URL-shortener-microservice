@@ -19,10 +19,10 @@ function displayResult(str) {
 function showToast(message, color) {
 	console.log('show toast');
 	toast.innerHTML = message;
-	toast.style.backgroundColor = `var(--${color})`;
-	toast.className = show;
+	toast.style.borderColor = `var(--${color})`;
+	toast.className = 'show';
 	setTimeout(() => {
-		toast.className.replace('show', '');
+		toast.classList.remove('show');
 	}, 3000);
 }
 
@@ -34,8 +34,11 @@ form.addEventListener('submit', e => {
 		.post(form.action, body)
 		.then(res => {
 			const data = res.data;
-			if (data.error) showToast(data.error, 'danger');
-			if (data.short_url) displayResult(data.short_url);
+			if (data.error) showToast(`⛔ ${data.error} ⛔`, 'danger');
+			if (data.short_url) {
+				displayResult(data.short_url);
+				showToast("🎉 it's for you 🎉", 'success');
+			}
 		})
 		.catch(e => console.log(e));
 });

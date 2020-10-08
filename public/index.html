@@ -10,14 +10,12 @@
 	<body>
 		<header class="header">
 			<h1 class="title">URL Shortener Microservice</h1>
-			<p class="centered">
-				1. I can POST a URL to [project_url]/api/shorturl/new and I will
-				receive a shortened URL in the JSON response.
-			</p>
-			<p class="centered">
-				2. When I visit the shortened URL, it will redirect me to my
-				original link.
-			</p>
+
+			<p class="centered"></p>
+			<a
+				href="https://www.freecodecamp.org/learn/apis-and-microservices/apis-and-microservices-projects/url-shortener-microservice"
+				><p class="centered">FreeCodeCamp APIs and Microservices</p></a
+			>
 		</header>
 
 		<section class="main">
@@ -27,20 +25,21 @@
 			<div class="centered">
 				<form
 					id="send-request"
-					class="form"
 					action="/api/shorturl/new"
 					method="post"
 				>
-					<input
-						id="url"
-						class="input"
-						type="text"
-						value=""
-						name="url"
-						placeholder="Insert Url"
-						required
-					/>
-					<button class="button" type="submit">SUBMIT</button>
+					<div class="form">
+						<input
+							id="url"
+							class="input"
+							type="text"
+							value=""
+							name="url"
+							placeholder="Insert Url"
+							required
+						/>
+						<button class="button" type="submit">SUBMIT</button>
+					</div>
 				</form>
 			</div>
 
@@ -56,7 +55,12 @@
 			</div>
 		</section>
 
-		<footer class="footer"></footer>
+		<footer class="footer">
+			<ul>
+				<li><p>Author: Tommaso Destro</p></li>
+				<li><a href="https://github.com/destroT"> GitHub</a></li>
+			</ul>
+		</footer>
 
 		<div class="toast" id="toast">Insert a valid URL</div>
 

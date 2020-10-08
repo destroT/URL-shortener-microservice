@@ -27,7 +27,6 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
 }
 
 .header {
@@ -40,7 +39,31 @@ body {
 }
 
 .footer {
-	height: 25px;
+	position: fixed;
+	max-height: 120px;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	color: var(--light);
+	text-align: center;
+	flex-shrink: 0;
+}
+
+ul {
+	padding: 1.25rem;
+	text-align: center;
+}
+ul li {
+	list-style-type: none;
+	display: inline-block;
+	margin: 0.25rem 0.75rem;
+}
+ul a {
+	color: #fff;
+	text-decoration: none;
+}
+ul a:hover {
+	text-decoration: underline;
 }
 
 .container {
@@ -52,10 +75,13 @@ body {
 .form {
 	height: 10em;
 	width: 80em;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	flex-wrap: wrap;
 }
 
 .input {
-	width: 75%;
 	height: 2em;
 	background-color: var(--bgFormEls);
 	border-bottom: 2px solid var(--light);
@@ -65,6 +91,8 @@ body {
 	border-top-style: hidden;
 	border-right-style: hidden;
 	border-left-style: hidden;
+
+	flex-grow: 3;
 }
 
 .input:focus {
@@ -74,12 +102,13 @@ body {
 }
 
 .button {
-	width: 15%;
 	height: 2.75em;
 	font-size: 1.25em;
 	background: none;
 	color: var(--light);
 	border: 2px solid var(--primary);
+
+	flex-grow: 1;
 }
 
 .button:hover {
@@ -113,23 +142,25 @@ a {
 	color: inherit;
 }
 
-.toast {
+#toast {
+	min-width: 300px;
+	margin-left: -150px;
 	visibility: hidden;
-	min-width: 250px;
-	margin-left: -125px;
-	background-color: var(--danger);
-	color: #fff;
-	text-align: center;
-	border-radius: 2px;
-	padding: 16px;
-	position: fixed;
-	z-index: 1;
-	left: 50%;
 	bottom: 30px;
-	font-size: 17px;
+	left: 50%;
+	z-index: 1;
+	text-align: center;
+	font-size: 25px;
+	position: absolute;
+	padding: 1em;
+	background-color: var(--bodyColorLight);
+	color: var(--light);
+	border-bottom: 3px solid var(--danger);
+	border-top: 3px solid var(--danger);
+	border-radius: 2px;
 }
 
-.toast.show {
+#toast.show {
 	visibility: visible;
 	-webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
 	animation: fadein 0.5s, fadeout 0.5s 2.5s;
