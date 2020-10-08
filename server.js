@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // initialize routes
 //app.use('/.netlify/functions/', indexRouter);
-app.use('/.netlify/functions/api', apiRouter);
+app.use('/api', apiRouter);
 
 // Run server
 const PORT = process.env.PORT || 8000;
