@@ -20,7 +20,7 @@ mongoose
 	);
 
 // Load Routes
-const indexRouter = require('./routes/index');
+//const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 
 // Initialize
@@ -32,8 +32,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // initialize routes
-app.use('/', indexRouter);
-app.use('/api', apiRouter);
+//app.use('/.netlify/functions/', indexRouter);
+app.use('/.netlify/functions/api', apiRouter);
 
 // Run server
 const PORT = process.env.PORT || 8000;
