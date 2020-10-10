@@ -17,7 +17,7 @@ After you get the URI, you need to create a file .env in the main folder and add
 Install the dependencies
 
 ```sh
-$ cd exercise-tracker
+$ cd URL-shortener-microservice
 $ npm install -d
 $ npm start
 ```
