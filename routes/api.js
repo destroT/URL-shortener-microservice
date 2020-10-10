@@ -45,16 +45,13 @@ router.post('/shorturl/new', async (req, res) => {
 		.sort({ short: 'desc' })
 		.limit(1)
 		.exec((err, data) => {
-			console.log(data);
 			if (data) shortVal = data.short + 1;
 		});
 
-	console.log(`Max SHortened ${shortVal}`);
-
 	await UrlModel.findOne({ original: url }, async (err, data) => {
 		if (!err && data != undefined) {
-			console.log('found');
-			console.log(data);
+			// console.log('found');
+			// console.log(data);
 			return res.json({
 				original_url: data.original,
 				short_url: data.short,
@@ -67,7 +64,7 @@ router.post('/shorturl/new', async (req, res) => {
 			});
 			try {
 				const savedShortened = await newShortened.save();
-				console.log(savedShortened);
+				console.log(`New short url created ${savedShortened}`);
 				return res.json({
 					original_url: savedShortened.original,
 					short_url: savedShortened.short,
@@ -90,7 +87,7 @@ router.get('/shorturl/:id', async (req, res) => {
 
 	const data = await UrlModel.findOne({ short: Number(id) });
 
-	console.log(data);
+	//console.log(data);
 	if (!data) return res.json({ error: 'Invalid URL' });
 
 	console.log(

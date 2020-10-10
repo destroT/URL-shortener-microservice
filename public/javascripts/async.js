@@ -1,44 +1,56 @@
+// Initialize constants
 const protocol = window.location.protocol;
 const hostname = window.location.hostname;
 const port = window.location.port;
-console.log(protocol);
+
 const form = document.getElementById('send-request');
 const link = document.getElementById('shortened');
-const toast = document.getElementById('toast');
+const copyToClipboard = document.getElementById('copyToClipboard');
+const results = document.getElementById('results');
 
-function displayResult(str) {
-	const shortened_url =
-		protocol + '//' + hostname + ':' + port + '/api/shorturl/' + str;
-	console.log(shortened_url);
+// Initialize Toast
+const notyf = new Notyf({
+	duration: 5000,
+	position: {
+		x: 'right',
+		y: 'top',
+	},
+});
+
+// Initialize functions
+const resultsHide = () => (results.style.visibility = 'hidden'); //Show-hide result div
+const resultsShow = () => (results.style.visibility = 'visible');
+const displayResult = str => {
+	const shortened_url = `${protocol}//${hostname}:${port}/api/shorturl/${str}`;
 	link.href = shortened_url;
-
 	link.innerHTML = shortened_url;
-	link.style.display = 'block';
-}
+}; // Change result link values
 
-function showToast(message, color) {
-	console.log('show toast');
-	toast.innerHTML = message;
-	toast.style.borderColor = `var(--${color})`;
-	toast.className = 'show';
-	setTimeout(() => {
-		toast.classList.remove('show');
-	}, 3000);
-}
-
-form.addEventListener('submit', e => {
+// Send request to server
+const postHandler = e => {
 	e.preventDefault();
-
 	const body = new URLSearchParams({ url: form.url.value });
+
 	axios
 		.post(form.action, body)
 		.then(res => {
 			const data = res.data;
-			if (data.error) showToast(`⛔ ${data.error} ⛔`, 'danger');
 			if (data.short_url) {
 				displayResult(data.short_url);
-				showToast("🎉 it's for you 🎉", 'success');
+				resultsShow();
+				notyf.success('🎉 Url created 🎉');
+			}
+			if (data.error) {
+				resultsHide();
+				notyf.error(`⛔ ${data.error} ⛔`);
 			}
 		})
-		.catch(e => console.log(e));
+		.catch(e => {});
+};
+
+// Create event listeners
+form.addEventListener('submit', e => postHandler(e));
+copyToClipboard.addEventListener('click', () => {
+	window.navigator.clipboard.writeText(link.href);
+	notyf.success('Link copied!');
 });

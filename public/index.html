@@ -3,67 +3,132 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="Description" content="Author: Tommaso Destro, FreeCodeCAmp project">
+
 		<link rel="stylesheet" href="./stylesheets/style.css" />
-		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+    	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+		<link rel="stylesheet" href="./icons/style.css">
+
+		<script defer src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+		
+		<script defer type="module" src="./javascripts/async.js"></script>
+
 		<title>URL Shortener</title>
 	</head>
 	<body>
-		<header class="header">
-			<h1 class="title">URL Shortener Microservice</h1>
 
-			<p class="centered"></p>
-			<a
-				href="https://www.freecodecamp.org/learn/apis-and-microservices/apis-and-microservices-projects/url-shortener-microservice"
-				><p class="centered">FreeCodeCamp APIs and Microservices</p></a
-			>
-		</header>
+		
+		<div class="container">
 
-		<section class="main">
-			<h2 class="centered subtitle">
-				Add a link and get the url shortened.
-			</h2>
-			<div class="centered">
-				<form
-					id="send-request"
-					action="/api/shorturl/new"
-					method="post"
-				>
-					<div class="form">
-						<input
-							id="url"
-							class="input"
-							type="text"
-							value=""
-							name="url"
-							placeholder="Insert Url"
-							required
-						/>
-						<button class="button" type="submit">SUBMIT</button>
+			<div class="bg-light py-5">
+				<div class="container text-center">
+				  <h1 class="display-3">URL Shortener Microservice</h1>
+				  <p class="lead">This is an exercise for APIs and Microservices hosted by FreeCodeCamp.</p>
+				</div>
+			</div>
+
+			<section class="pt-5">
+				<div class="row row-cols-1 align-items-center">
+					<div class="col">
+						<form id="send-request" class="needs-validation g-3" action="/api/shorturl/new" method="post" novalidate>
+							<div class="">
+								<p class="lead">Add a link and get the url shortened.</p>
+                            </div>
+                            
+							<div class="mb-3 row row-cols-1 row-cols-md-2  row-cols-lg-2 row-cols-xl-2 align-items-center">
+								<div class="my-2 col col-md-9 col-lg-9 col-xl-9">
+									<input type="text" name="url" id="url" class="form-control form-control-lg" required/>
+									<div class="invalid-feedback">
+										Please provide a url.
+									</div>
+                                </div>
+                                <div class="my-2 col col-md-3 col-lg-3 col-xl-3">
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit">
+                                            Submit
+                                        </button>
+                                </div>
+								
+							</div>
+							
+						</form>
 					</div>
-				</form>
-			</div>
+				</div>
+			</section>
 
-			<div class="result centered">
-				<h2>
-					<a
-						id="shortened"
-						style="display: none"
-						href="http://localhost:8000/"
-						>http://localhost:8000/</a
-					>
-				</h2>
-			</div>
-		</section>
+			<section id="results" class=" bg-light text-center row row-cols-2" style="visibility: hidden;"> 
+                <button id="copyToClipboard" class="btn btn-outline-dark col-2">  Copy </button>
+                <div class="col-10 text-center">
+                    <p class="lead" style="transform: rotate(0);">
+                        <a class="stretched-link link-success fixed-top" id="shortened" style="font-size: 20px;"  href="http://">results here</a>
+                    </p> 
+                </div>
+                 
+            </section>
 
-		<footer class="footer">
-			<ul>
-				<li><p>Author: Tommaso Destro</p></li>
-				<li><a href="https://github.com/destroT"> GitHub</a></li>
-			</ul>
+		<footer class="footer fixed-bottom py-3 bg-light" >
+            
+			<div class="container text-center text-muted">
+
+                <div class="row row-cols-3">
+                    <div class="col">
+                        <ul class="list-group list-group-flush list-group-horizontal justify-content-center">
+                            <li><p class="lead col mr-4">Technologies </p></li>
+                            <li><i class="icon-node-dot-js mr-2"></i></li>
+                            <li><i class="icon-bootstrap"></i></li>
+                        </ul>
+                    </div>
+                    <div class="col" style="transform: rotate(0);">
+                        <ul class="list-group list-group-flush list-group-horizontal justify-content-center">
+                            <li >
+                                <p class="lead">GitHub Page </p>
+                            </li>
+                            <li class="ml-4">
+                                <a href="https://github.com/destroT/URL-shortener-microservice" class="icon-link stretched-link"><i class="icon-github1"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col" style="transform: rotate(0);">
+                        <ul class="list-group list-group-flush list-group-horizontal  justify-content-center">
+                            <li class="mr-4"><p class="lead">FreeCodeCampProject</p></li>
+                            <li><a href="https://www.freecodecamp.org/" class="icon-link stretched-link"><i class="icon-freecodecamp"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+  
+				<div class="text-center">
+                    Author: Tommaso Destro Copyright &copy; 2020 
+                </div>
+				
+			</div>
 		</footer>
 
-		<div class="toast" id="toast">Insert a valid URL</div>
-
-		<script src="./javascripts/async.js"></script>
+		<script>
+        
+			// Example starter JavaScript for disabling form submissions if there are invalid fields
+			(function() {
+			  'use strict';
+			  window.addEventListener('load', function() {
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				var forms = document.getElementsByClassName('needs-validation');
+				// Loop over them and prevent submission
+				var validation = Array.prototype.filter.call(forms, function(form) {
+				  form.addEventListener('submit', function(event) {
+					if (form.checkValidity() === false) {
+					  event.preventDefault();
+					  event.stopPropagation();
+					}
+					form.classList.add('was-validated');
+				  }, false);
+				});
+			  }, false);
+			})();
+        </script>
+    
 	</body>
 </html>
+    
